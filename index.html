@@ -104,23 +104,82 @@ function initAuth(){
   $('signupForm').onsubmit=e=>{e.preventDefault();let email=safeEmail($('signupEmail').value), phone=$('signupPhone').value.trim(), pass=$('signupPassword').value, conf=$('signupConfirm').value, users=getUsers(); if(!email||!phone||!pass)return setAuthMsg('signupMsg','Preencha todos os campos.'); if(pass.length<6)return setAuthMsg('signupMsg','A senha precisa ter pelo menos 6 caracteres.'); if(pass!==conf)return setAuthMsg('signupMsg','As senhas não conferem.'); if(users[email])return setAuthMsg('signupMsg','Esse e-mail já tem cadastro. Use Entrar.'); users[email]={email,phone,pass,born:new Date().toISOString()}; setUsers(users); localStorage.setItem(AUTH_SESSION_KEY,email); document.body.classList.add('auth-ok'); toast('Conta criada e login salvo neste navegador.');};
   $('loginForm').onsubmit=e=>{e.preventDefault();let email=safeEmail($('loginEmail').value), pass=$('loginPassword').value, users=getUsers(); if(!users[email]||users[email].pass!==pass)return setAuthMsg('loginMsg','E-mail ou senha incorretos.'); localStorage.setItem(AUTH_SESSION_KEY,email); document.body.classList.add('auth-ok'); toast('Entrada confirmada. Bom treino.');};
   $('logoutBtn').onclick=()=>{localStorage.removeItem(AUTH_SESSION_KEY);document.body.classList.remove('auth-ok');showAuthTab('login');toast('Sessão encerrada.');};
-}
-function syncSoundButton(){let b=$('toggleSound'); if(b)b.textContent=S.sound?'🔊 Som ligado':'🔇 Som desligado'}
-function initParticles(){let layer=$('particleLayer'); if(!layer) return; layer.innerHTML=''; for(let i=0;i<46;i++){let p=document.createElement('i');p.className='particle '+(i%4===0?'redp':'');p.style.setProperty('--x',Math.round(Math.random()*100)+'vw');p.style.setProperty('--drift',(Math.round(Math.random()*90)-45)+'vw');p.style.setProperty('--dur',(10+Math.random()*18).toFixed(1)+'s');p.style.animationDelay=(-Math.random()*20).toFixed(1)+'s';p.style.left='0';layer.appendChild(p)}}
-let ytPlayer=null, ytApiLoading=false, musicRequested=false;
-function loadYT(){if(window.YT&&window.YT.Player){createYT();return} if(ytApiLoading)return; ytApiLoading=true; let tag=document.createElement('script'); tag.src='https://www.youtube.com/iframe_api'; document.head.appendChild(tag)}
-window.onYouTubeIframeAPIReady=function(){createYT()};
-function createYT(){if(ytPlayer||!window.YT||!YT.Player)return; ytPlayer=new YT.Player('ytPlayer',{height:'1',width:'1',videoId:'UI9xjHtNm88',playerVars:{autoplay:0,loop:1,playlist:'UI9xjHtNm88',controls:0,rel:0,modestbranding:1},events:{onReady:e=>{e.target.setVolume(+$('musicVolume').value||28); if(musicRequested){e.target.playVideo();$('musicToggle').textContent='Pausar trilha';}}}})}
-function initMusic(){ if(!$('musicToggle')) return;
-  $('musicToggle').onclick=()=>{musicRequested=true;loadYT(); if(ytPlayer&&ytPlayer.getPlayerState){let st=ytPlayer.getPlayerState(); if(st===1){ytPlayer.pauseVideo();$('musicToggle').textContent='Tocar trilha'}else{ytPlayer.setVolume(+$('musicVolume').value||28);ytPlayer.playVideo();$('musicToggle').textContent='Pausar trilha'}} else {toast('Carregando trilha. Clique novamente se não iniciar.')}};
-  $('musicVolume').oninput=e=>{if(ytPlayer&&ytPlayer.setVolume) ytPlayer.setVolume(+e.target.value)};
-}
-
-function init(){initAuth();initParticles();load();syncSoundButton();renderWeeks();renderArts();renderCombos();renderVideos();renderChallenges();renderTests();analysis();update();let obs=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('on')}),{threshold:.08});all('.reveal').forEach(e=>obs.observe(e));all('.links a').forEach(a=>a.onclick=()=>$('links').classList.remove('open'))}init();
-</script>
 <audio
   id="bgMusic"
   src="assets/musica/NEFFEX%20-%20Fightback%20%28INSTRUMENTAL%29%20-%20IXORBEATZZ%20%28youtube%29.mp3"
   loop
   preload="auto">
-</audio></body></html>
+</audio>
+
+<script>
+let musicPlaying = false;
+
+function syncSoundButton() {
+  const b = $('toggleSound');
+  if (b) b.textContent = '▶ Tocar trilha';
+}
+
+function initMusic() {
+  const btn = $('toggleSound');
+  const music = $('bgMusic');
+  const volume = $('musicVolume');
+
+  if (!btn || !music) return;
+
+  music.volume = volume ? Number(volume.value) / 100 : 0.28;
+
+  btn.onclick = async () => {
+    try {
+      if (!musicPlaying) {
+        await music.play();
+        musicPlaying = true;
+        btn.textContent = '⏸ Pausar trilha';
+        toast('Trilha ativada.');
+      } else {
+        music.pause();
+        musicPlaying = false;
+        btn.textContent = '▶ Tocar trilha';
+        toast('Trilha pausada.');
+      }
+    } catch (error) {
+      toast('Clique novamente para liberar a música no navegador.');
+    }
+  };
+
+  if (volume) {
+    volume.oninput = () => {
+      music.volume = Number(volume.value) / 100;
+    };
+  }
+}
+
+function init(){
+  initAuth();
+  initParticles();
+  load();
+  syncSoundButton();
+  initMusic();
+  renderWeeks();
+  renderArts();
+  renderCombos();
+  renderVideos();
+  renderChallenges();
+  renderTests();
+  analysis();
+  update();
+
+  let obs = new IntersectionObserver(
+    es => es.forEach(e => {
+      if(e.isIntersecting) e.target.classList.add('on');
+    }),
+    {threshold:.08}
+  );
+
+  all('.reveal').forEach(e => obs.observe(e));
+  all('.links a').forEach(a => a.onclick = () => $('links').classList.remove('open'));
+}
+
+init();
+</script>
+</body>
+</html>
