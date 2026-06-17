@@ -118,4 +118,9 @@ function initMusic(){ if(!$('musicToggle')) return;
 
 function init(){initAuth();initParticles();load();syncSoundButton();renderWeeks();renderArts();renderCombos();renderVideos();renderChallenges();renderTests();analysis();update();let obs=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('on')}),{threshold:.08});all('.reveal').forEach(e=>obs.observe(e));all('.links a').forEach(a=>a.onclick=()=>$('links').classList.remove('open'))}init();
 </script>
-</body></html>
+<audio
+  id="bgMusic"
+  src="assets/musica/NEFFEX%20-%20Fightback%20%28INSTRUMENTAL%29%20-%20IXORBEATZZ%20%28youtube%29.mp3"
+  loop
+  preload="auto">
+</audio></body></html>
