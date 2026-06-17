@@ -1,0 +1,1 @@
+Ajustes aplicados: removida a trilha/mensagem inferior; seção Combos com filtros e botão Ver mais para combos.html; vídeos com thumbnails do YouTube. Abra index.html.
