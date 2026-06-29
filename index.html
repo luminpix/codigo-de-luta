@@ -46,6 +46,12 @@ body{font-size:16px;letter-spacing:.005em;text-rendering:optimizeLegibility;-web
 .hero-stats{margin-top:clamp(30px,7vh,72px)}
 @media(max-width:980px){.hero-cinema .hero-grid{grid-template-columns:1fr;align-items:start;min-height:auto}.hero-copy{padding-top:60px}.hero-copy h1{font-size:clamp(3.35rem,13vw,5rem);white-space:normal}.hero-dashboard-panel{width:100%;margin:8px 0 0}.hero-bg-video{object-position:58% top;opacity:.58}.hero-cinema:before{background:linear-gradient(180deg,rgba(8,4,8,.82) 0%,rgba(64,5,19,.60) 48%,rgba(8,8,10,.82) 100%),radial-gradient(circle at 28% 26%,rgba(255,51,88,.22),transparent 24rem)}}
 @media(max-width:560px){.hero-cinema{padding-top:42px}.hero-copy h1{font-size:clamp(2.95rem,15vw,4.25rem);white-space:normal}.hero-copy{padding-top:44px}.hero-dashboard-grid{grid-template-columns:1fr}.hero-dashboard-panel{padding:18px}.hero-bg-video{object-position:61% top;opacity:.50}}
+/* ===== PERSONAGEM NO FUNDO DA PAGINA ===== */
+.arena-fighter-bg{position:absolute;right:clamp(-185px,-9vw,-55px);top:clamp(120px,22vh,310px);width:clamp(440px,41vw,790px);max-width:none;opacity:.32;filter:saturate(1.16) contrast(1.08) brightness(.72) drop-shadow(0 0 60px rgba(213,15,50,.22));mix-blend-mode:screen;transform:translateZ(0);-webkit-mask-image:linear-gradient(90deg,transparent 0%,rgba(0,0,0,.45) 10%,#000 32%,#000 70%,transparent 100%),linear-gradient(180deg,transparent 0%,#000 12%,#000 78%,transparent 100%);mask-image:linear-gradient(90deg,transparent 0%,rgba(0,0,0,.45) 10%,#000 32%,#000 70%,transparent 100%),linear-gradient(180deg,transparent 0%,#000 12%,#000 78%,transparent 100%);animation:arenaFighterFloat 12s ease-in-out infinite alternate}
+.arena-fighter-glow{position:absolute;right:-13vw;top:20vh;width:52vw;height:92vh;background:radial-gradient(ellipse at 55% 42%,rgba(213,15,50,.22),transparent 62%),radial-gradient(ellipse at 58% 64%,rgba(248,197,77,.12),transparent 58%);filter:blur(28px);opacity:.62;mix-blend-mode:screen}
+@keyframes arenaFighterFloat{from{transform:translate3d(0,0,0) scale(1)}to{transform:translate3d(-18px,-24px,0) scale(1.025)}}
+@media(max-width:980px){.arena-fighter-bg{right:-250px;top:42vh;width:680px;opacity:.24}.arena-fighter-glow{right:-42vw;top:36vh;width:90vw}}
+@media(max-width:560px){.arena-fighter-bg{right:-285px;top:52vh;width:610px;opacity:.18}.arena-fighter-glow{opacity:.40}}
 </style>
 </head>
 <body>
@@ -55,6 +61,8 @@ body{font-size:16px;letter-spacing:.005em;text-rendering:optimizeLegibility;-web
   <div class="arena-grid arena-grid-2"></div>
   <div class="orb orb-red"></div>
   <div class="orb orb-gold"></div>
+  <div class="arena-fighter-glow"></div>
+  <img class="arena-fighter-bg" src="assets/img/muay-thai-legend-bg.png" alt="">
   <div class="scan-lines"></div>
   <div id="particleLayer" class="particle-layer"></div>
 </div>
